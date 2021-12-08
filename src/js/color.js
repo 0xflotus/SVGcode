@@ -18,7 +18,6 @@
  */
 
 import { filterInputs, POTRACE } from './ui.js';
-import { initialViewBox } from './panzoom.js';
 import { progress, svgOutput, optimizeCurvesCheckbox } from './domrefs.js';
 import ColorWorker from './colorworker?worker';
 
@@ -69,12 +68,6 @@ const convertToColorSVG = async (imageData) => {
             .replace(/\s+width="\d+(?:\.\d+)?"/, '')
             .replace(/\s+height="\d+(?:\.\d+)"/, '');
           suffix = data.svg.replace(/(.*?<svg[^>]+>)(.*?)(<\/svg>)/, '$3');
-          if (initialViewBox.width) {
-            prefix = prefix.replace(
-              /viewBox="([^"]+)"/,
-              `viewBox="${initialViewBox.x} ${initialViewBox.y} ${initialViewBox.width} ${initialViewBox.height}"`,
-            );
-          }
         }
         const path = data.svg.replace(/(.*?<svg[^>]+>)(.*?)(<\/svg>)/, '$2');
         paths += path;

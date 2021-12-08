@@ -47,12 +47,8 @@ import {
   details,
   summary,
   closeOptionsButton,
+  pinchZoom,
 } from './domrefs.js';
-import {
-  resetZoomAndPan,
-  initialViewBox,
-  storeInitialViewBox,
-} from './panzoom.js';
 import { debounce } from './util.js';
 import { startProcessing } from './orchestrate.js';
 import { i18n } from './i18n.js';
@@ -60,6 +56,7 @@ import { FILE_HANDLE } from './filesystem.js';
 import { get, set, del } from 'idb-keyval';
 import './clipboard.js';
 import './filesystem.js';
+import 'pinch-zoom-element';
 
 import paletteIcon from 'material-design-icons/image/svg/production/ic_brush_48px.svg?raw';
 import scaleIcon from 'material-design-icons/image/svg/production/ic_straighten_48px.svg?raw';
@@ -226,24 +223,21 @@ const createControls = (filter, props, details) => {
     input.addEventListener(
       'change',
       debounce(async () => {
-        storeInitialViewBox();
-        await startProcessing(initialViewBox);
+        await startProcessing();
       }, 250),
     );
   } else if (Object.keys(POTRACE).includes(filter)) {
     input.addEventListener(
       'change',
       debounce(async () => {
-        storeInitialViewBox();
-        await startProcessing(initialViewBox);
+        await startProcessing();
       }, 250),
     );
   } else {
     input.addEventListener(
       'change',
       debounce(async () => {
-        storeInitialViewBox();
-        await startProcessing(initialViewBox);
+        await startProcessing();
       }, 250),
     );
   }
@@ -271,29 +265,24 @@ posterizeCheckbox.addEventListener('change', async () => {
   Object.keys(COLORS).forEach((color) => {
     filterInputs[color].disabled = disabled;
   });
-  storeInitialViewBox();
-  await startProcessing(initialViewBox);
+  await startProcessing();
 });
 
 colorRadio.addEventListener('change', async () => {
-  storeInitialViewBox();
-  await startProcessing(initialViewBox);
+  await startProcessing();
 });
 
 monochromeRadio.addEventListener('change', async () => {
-  storeInitialViewBox();
-  await startProcessing(initialViewBox);
+  await startProcessing();
 });
 
 considerDPRCheckbox.addEventListener('change', async () => {
-  storeInitialViewBox();
-  await startProcessing(initialViewBox);
+  await startProcessing();
 });
 
 optimizeCurvesCheckbox.addEventListener('change', async () => {
   filterInputs.opttolerance.disabled = !optimizeCurvesCheckbox.checked;
-  storeInitialViewBox();
-  await startProcessing(initialViewBox);
+  await startProcessing();
 });
 
 const initUI = async () => {
@@ -454,6 +443,15 @@ const showToast = (message, duration = 5000) => {
     }, duration);
     return;
   }
+};
+
+const resetZoomAndPan = () => {
+  pinchZoom.setTransform({
+    scale: 1,
+    x: 0,
+    y: 0,
+    allowChangeEvent: false,
+  });
 };
 
 const showAdvancedControls = () => {

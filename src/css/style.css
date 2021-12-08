@@ -249,6 +249,11 @@ summary svg {
   fill: var(--alternative-accent-color);
 }
 
+pinch-zoom {
+  width: 100%;
+  height: 100%;
+}
+
 .checkerboard {
   background-position: 0 0, calc(2 * var(--space)) calc(2 * var(--space));
   background-size: calc(4 * var(--space)) calc(4 * var(--space));

@@ -50,10 +50,12 @@ const dropContainer = document.documentElement;
 const details = document.querySelector('details.main');
 const summary = document.querySelector('summary');
 const closeOptionsButton = document.querySelector('.close-options-button');
+const pinchZoom = document.querySelector('pinch-zoom');
 
 const dpr = window.devicePixelRatio;
 
 export {
+  pinchZoom,
   canvasMain,
   main,
   menu,
